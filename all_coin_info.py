@@ -48,7 +48,8 @@ def update_data_to_mongodb(**kwargs):
     db = client["LLM_DataLake"]
     collection = db['Coingecko_allcoin']        
     collection.insert_many(coin_data)
-    collection.update_many({}, [{"$set": {"symbol": {"$toUpper": "$symbol"}}}])
+    # update upper case symbol
+    #collection.update_many({}, [{"$set": {"symbol": {"$toUpper": "$symbol"}}}])
     print("All data saved to MongoDB")
     
 dag = DAG('All_coingecko_info', default_args=default_args, schedule_interval='@daily')
