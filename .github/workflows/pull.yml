@@ -1,0 +1,21 @@
+name: Pull Code
+
+
+on:
+  push:
+    branches:
+        - main
+
+jobs:
+    pull-code:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Pull Code
+              run: |
+                git config --global user.name "hoangks5"
+                git config --global user.email "hoangnd.ute@gmail.com"
+                git pull

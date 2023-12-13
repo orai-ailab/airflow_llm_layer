@@ -5,9 +5,8 @@ import pymongo
 from datetime import datetime
 import os 
 from dotenv import load_dotenv
-#Path to env
-dotenv_path = ''
-load_dotenv(dotenv_path=dotenv_path)
+
+load_dotenv()
 api_key = os.environ.get("CENTIC_API_KEY")
 client_url = os.environ.get("MONGO_URL")
 default_args = {
@@ -16,6 +15,7 @@ default_args = {
     'start_date': datetime(2023, 12, 12),
     'retries': 1,
 }
+
 def crawl_coingecko_data():
     all_coin_data = [] 
     for page in range(1, 46):#46
