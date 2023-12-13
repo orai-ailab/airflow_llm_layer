@@ -5,9 +5,9 @@ import pymongo
 from datetime import datetime
 import os 
 from dotenv import load_dotenv
-#Path to env
-dotenv_path = ''
-load_dotenv(dotenv_path=dotenv_path)
+
+
+load_dotenv()
 api_key = os.environ.get("CENTIC_API_KEY")
 client_url = os.environ.get("MONGO_URL")
 default_args = {
