@@ -47,7 +47,8 @@ def process_data(data_array, **kwargs):
         ]
 
         collection.bulk_write(update_requests)
-    os.system('python3 /home/llm/airflow/dags/airfow_git/lunarcrush/send_message.py --message "Crawl coin rank done"')
+    os.system('pip install discord.py')
+    os.system('python ./dags/airfow_git/utils.py --message "Crawl coin rank done"')
     sleep(20)
 
 
