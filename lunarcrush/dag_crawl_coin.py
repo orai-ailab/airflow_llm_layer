@@ -48,7 +48,7 @@ def process_data(data_array, **kwargs):
 
         collection.bulk_write(update_requests)
 
-    sleep(5)
+    sleep(20)
 
 
 # Định nghĩa các tham số cho DAG
