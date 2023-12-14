@@ -23,5 +23,13 @@ jobs:
           script: |
             cd ${{ secrets.XPATH }}
             git pull
+
+      - name: Create environment file
+        run: |
+          rm -rf .env
+          echo "CENTIC_API_KEY=${{ secrets.CENTIC_API_KEY }}" > .env
+          echo "MONGO_URL=${{ secrets.MONGO_URL }}" >> .env
+
+
               
   
