@@ -21,22 +21,26 @@ collection = db['lunarcrush_coin_info']
 
 def process_data(data_array, **kwargs):
     def fetch_time_series(i):
-        url = f"https://lunarcrush.com/api3/coins/{i['id']}/time-series"
-        headers = {'authorization': f'Bearer {token_lunar}'}
+        try:
+            url = f"https://lunarcrush.com/api3/coins/{i['id']}/time-series"
+            headers = {'authorization': f'Bearer {token_lunar}'}
 
-        response = requests.get(url, headers=headers)
-        data = response.json()
+            response = requests.get(url, headers=headers)
+            data = response.json()
 
-        if 'timeSeries' in data:
-            time_series = data['timeSeries']
-            if time_series:
-                count = len(time_series)
-                item = time_series[count - 1]
-                item.update({
-                    "name": i['name'],
-                    "symbol": i['symbol']
-                })
-                return item
+            if 'timeSeries' in data:
+                time_series = data['timeSeries']
+                if time_series:
+                    count = len(time_series)
+                    item = time_series[count - 1]
+                    item.update({
+                        "name": i['name'],
+                        "symbol": i['symbol']
+                    })
+                    return item
+        except Exception as e:
+            os.system(
+                f'python ./dags/airfow_git/utils.py --message "Request api lunarcrush errorr: {e}"')
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [executor.submit(fetch_time_series, i) for i in data_array]
@@ -52,9 +56,6 @@ def process_data(data_array, **kwargs):
         ]
 
         collection.bulk_write(update_requests)
-    os.system('pip install discord.py')
-    print(os.getcwd())
-    os.system('python ./dags/airfow_git/utils.py --message "Crawl coin rank done"')
     sleep(20)
 
 
