@@ -67,7 +67,7 @@ dag = DAG(
     schedule_interval='*/1 * * * *',
 )
 
-with open('./dags/airflow_git/lunarcrush/coins.json', 'r', encoding='utf-8') as readFile:
+with open('./dags/airfow_git/lunarcrush/coins.json', 'r', encoding='utf-8') as readFile:
     data = json.load(readFile)
     total_items = len(data)
     items_per_iteration = 200
