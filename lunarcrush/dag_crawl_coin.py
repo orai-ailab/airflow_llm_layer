@@ -47,7 +47,7 @@ def process_data(data_array, **kwargs):
         ]
 
         collection.bulk_write(update_requests)
-
+    os.system('python3 /home/llm/airflow/dags/airfow_git/lunarcrush/send_message.py --message "Crawl coin rank done"')
     sleep(20)
 
 
