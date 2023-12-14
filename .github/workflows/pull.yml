@@ -29,5 +29,8 @@ jobs:
             echo "CENTIC_API_KEY=${{ secrets.CENTIC_API_KEY }}" > .env
             echo "MONGO_URL=${{ secrets.MONGO_URL }}" >> .env
             echo "TOKEN_LUNAR=${{ secrets.TOKEN_LUNAR }}" >> .env
+            echo "TOKEN_DISCORD=${{ secrets.TOKEN_DISCORD }}" >> .env
+            echo "CHANNEL_ID=${{ secrets.CHANNEL_ID }}" >> .env
+
 
   
