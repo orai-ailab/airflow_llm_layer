@@ -61,9 +61,9 @@ default_args = {
 
 # Định nghĩa DAG
 dag = DAG(
-    'example_dag',
+    'lunarcrush_crawl_coin_rank',
     default_args=default_args,
-    description='A simple DAG with tasks running sequentially',
+    description='Thu thập dữ liệu coin trên lunarcrush.com theo rank',
     schedule_interval='*/1 * * * *',
 )
 
