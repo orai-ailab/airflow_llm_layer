@@ -57,6 +57,7 @@ default_args = {
     'start_date': datetime(2023, 12, 14),
     'retries': 1,
     'retry_delay': timedelta(minutes=5),
+    'catchup': False,
 }
 
 # Định nghĩa DAG
@@ -64,7 +65,7 @@ dag = DAG(
     'lunarcrush_crawl_coin_rank',
     default_args=default_args,
     description='Thu thập dữ liệu coin trên lunarcrush.com theo rank',
-    schedule_interval='@hourly'
+    schedule_interval='@hourly',
 )
 
 with open('./dags/airfow_git/lunarcrush/coins.json', 'r', encoding='utf-8') as readFile:
