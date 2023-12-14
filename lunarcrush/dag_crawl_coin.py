@@ -64,7 +64,7 @@ dag = DAG(
     'example_dag',
     default_args=default_args,
     description='A simple DAG with tasks running sequentially',
-    # schedule_interval=timedelta(),
+    schedule_interval='*/1 * * * *',
 )
 
 with open('lunarcrush/coins.json', 'r', encoding='utf-8') as readFile:
