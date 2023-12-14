@@ -31,7 +31,12 @@ def process_data(data_array, **kwargs):
             time_series = data['timeSeries']
             if time_series:
                 count = len(time_series)
-                return time_series[count - 1]
+                item = time_series[count - 1]
+                item.update({
+                    "name": i['name'],
+                    "symbol": i['symbol']
+                })
+                return item
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [executor.submit(fetch_time_series, i) for i in data_array]
