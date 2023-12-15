@@ -43,7 +43,13 @@ def remove_trash_coin(coins):
     # Loại bỏ các đồng tiền khỏi danh sách dựa trên index đã xác định
     for idx in reversed(indexes_to_drop):
         del coins[idx]
-
+default_args = {
+    'owner': 'airflow',
+    'start_date': datetime(2023, 12, 15),
+    'retries': 1,
+    'retry_delay': timedelta(minutes=5),
+    'catchup': False,
+}
 #Task1 : crawl data-> loại bỏ coin rác
 def crawl_and_remove_trash():
     try:
