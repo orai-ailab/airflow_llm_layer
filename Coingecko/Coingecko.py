@@ -55,6 +55,7 @@ def crawl_and_remove_trash():
     try:
         allcoin_info = crawl_coingecko_data()
         remove_trash_coin(allcoin_info)
+        print("Remove trash coin succes")
         coin_dataframe = pd.DataFrame(allcoin_info)
         coin_dataframe.rename(columns={'price_change_percentage_14d_in_currency':'price_change_percentage_14d',
                                        'price_change_percentage_24h_in_currency':'price_change_percentage_24h',
