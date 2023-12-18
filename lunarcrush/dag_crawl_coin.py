@@ -1,14 +1,4 @@
-# try:
-#     from airfow_git.lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
-#     print(22222)
-# except:
-#     try:
-#         from dags.airfow_git.lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
-#         print(333333)
-#     except:
-#         from ..dags.airfow_git.lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
-#         print(44444444)
-from ..dags.airfow_git.lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
+from airfow_git.lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
 from airflow.operators.python_operator import PythonOperator
 from airflow import DAG
 from time import sleep
