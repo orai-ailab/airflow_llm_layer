@@ -1,3 +1,4 @@
+from elasticsearch_service import connect, create_or_update, check_or_create_index
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 from time import sleep
@@ -8,11 +9,7 @@ import os
 import requests
 import concurrent.futures
 import sys
-sys.path.append('./dags/airfow_git')
-try:
-    from lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
-except:
-    from ..lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
+sys.path.insert(0, '/opt/airflow/dags/airfow_git/lunarcrush/')
 
 load_dotenv()
 
