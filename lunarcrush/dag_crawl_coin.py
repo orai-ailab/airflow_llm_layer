@@ -6,7 +6,7 @@ import json
 import os
 import requests
 import concurrent.futures
-from elasticsearch_service import connect, create_or_update, check_or_create_index
+from ..elasticsearch_service import connect, create_or_update, check_or_create_index
 from dotenv import load_dotenv
 load_dotenv()
 
