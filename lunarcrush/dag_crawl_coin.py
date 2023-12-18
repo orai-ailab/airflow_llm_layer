@@ -8,9 +8,9 @@ import requests
 import concurrent.futures
 
 try:
-    from elasticsearch_service import connect, create_or_update, check_or_create_index
+    from lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
 except:
-    from ..elasticsearch_service import connect, create_or_update, check_or_create_index
+    from lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
 
 from dotenv import load_dotenv
 load_dotenv()
