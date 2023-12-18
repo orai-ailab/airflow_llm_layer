@@ -31,6 +31,10 @@ jobs:
             echo "TOKEN_LUNAR=${{ secrets.TOKEN_LUNAR }}" >> .env
             echo "TOKEN_DISCORD=${{ secrets.TOKEN_DISCORD }}" >> .env
             echo "CHANNEL_ID=${{ secrets.CHANNEL_ID }}" >> .env
+            echo "ES_NAME=${{ secrets.ES_NAME }}" >> .env
+            echo "ES_PASSWORD=${{ secrets.ES_PASSWORD }}" >> .env
+            echo "ES_HOST=${{ secrets.ES_HOST }}" >> .env
+            echo "ES_PORT=${{ secrets.ES_PORT }}" >> .env
 
 
   

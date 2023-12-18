@@ -6,17 +6,20 @@ import json
 import os
 import requests
 import concurrent.futures
-from pymongo import MongoClient, UpdateOne
+from elasticsearch_service import connect, create_or_update, check_or_create_index
 from dotenv import load_dotenv
 load_dotenv()
 
 token_lunar = os.environ.get("TOKEN_LUNAR")
 uri = os.environ.get("MONGO_URL")
+es_username = os.environ.get('ES_NAME')
+es_password = os.environ.get('ES_PASSWORD')
+es_host = os.environ.get('ES_HOST')
+es_port = os.environ.get("ES_PORT")
 
-
-client = MongoClient(uri)
-db = client['LLM_database']
-collection = db['lunarcrush_coin_info']
+client = connect(es_username, es_password, es_host, es_port)
+index_name = 'lunarcrush-coin-info'
+check_or_create_index(index_name, client)
 
 
 def process_data(data_array, **kwargs):
@@ -46,16 +49,7 @@ def process_data(data_array, **kwargs):
         futures = [executor.submit(fetch_time_series, i) for i in data_array]
         results = [future.result()
                    for future in concurrent.futures.as_completed(futures)]
-        update_requests = [
-            UpdateOne(
-                {"asset_id": result["asset_id"]},
-                {"$set": result},
-                upsert=True
-            )
-            for result in results
-        ]
-
-        collection.bulk_write(update_requests)
+        create_or_update(client, index_name, 'asset_id', results)
     sleep(20)
 
 
