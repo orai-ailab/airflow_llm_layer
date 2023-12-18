@@ -1,17 +1,14 @@
-try:
-    from lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
-    print(111111)
-except:
-    try:
-        from airfow_git.lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
-        print(22222)
-    except:
-        try:
-            from dags.airfow_git.lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
-            print(333333)
-        except:
-            from ..dags.airfow_git.lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
-            print(44444444)
+# try:
+#     from airfow_git.lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
+#     print(22222)
+# except:
+#     try:
+#         from dags.airfow_git.lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
+#         print(333333)
+#     except:
+#         from ..dags.airfow_git.lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
+#         print(44444444)
+from lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
 from airflow.operators.python_operator import PythonOperator
 from airflow import DAG
 from time import sleep
@@ -26,10 +23,10 @@ load_dotenv()
 
 # get env
 token_lunar = os.environ.get("TOKEN_LUNAR")
-# es_username = os.environ.get('ES_NAME')
-# es_password = os.environ.get('ES_PASSWORD')
-# es_host = os.environ.get('ES_HOST')
-# es_port = os.environ.get("ES_PORT")
+es_username = os.environ.get('ES_NAME')
+es_password = os.environ.get('ES_PASSWORD')
+es_host = os.environ.get('ES_HOST')
+es_port = os.environ.get("ES_PORT")
 uri = os.environ.get("MONGO_URL")
 
 # init mongo
@@ -38,9 +35,9 @@ db = client_mongo['LLM_database']
 collection = db['lunarcrush_coin_info']
 
 # init elastic
-# client = connect(es_username, es_password, es_host, es_port)
-# index_name = 'lunarcrush-coin-info'
-# check_or_create_index(index_name, client)
+client = connect(es_username, es_password, es_host, es_port)
+index_name = 'lunarcrush-coin-info'
+check_or_create_index(index_name, client)
 
 
 def process_data(data_array, **kwargs):
@@ -79,7 +76,7 @@ def process_data(data_array, **kwargs):
             for result in results
         ]
         collection.bulk_write(update_requests)
-        # create_or_update(client, index_name, 'asset_id', results)
+        create_or_update(client, index_name, 'asset_id', results)
     sleep(20)
 
 
