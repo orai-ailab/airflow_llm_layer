@@ -1,15 +1,9 @@
-try:
-    import os
-    os.system('pip install elasticsearch')
-    os.system('pip install elasticsearch==7.13.4')
-    from elasticsearch import Elasticsearch
-    from elasticsearch.helpers import bulk
-except:
-    pass
+from elasticsearch import Elasticsearch
+from elasticsearch.helpers import bulk
 
 
 def connect(es_username, es_password, es_host, es_port):
-    client = Elasticsearch(f"{es_host}:{es_port}/",
+    client = Elasticsearch("{}:{}/".format(es_host, es_port),
                            http_auth=(es_username, es_password))
     return client
 
