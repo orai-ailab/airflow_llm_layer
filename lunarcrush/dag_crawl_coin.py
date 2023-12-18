@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from datetime import datetime, timedelta
 from time import sleep
 from airflow import DAG
@@ -6,13 +7,13 @@ import json
 import os
 import requests
 import concurrent.futures
-
+import sys
+sys.path.append('./dags/airfow_git')
 try:
     from lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
 except:
     from ..lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
 
-from dotenv import load_dotenv
 load_dotenv()
 
 token_lunar = os.environ.get("TOKEN_LUNAR")
