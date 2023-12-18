@@ -4,7 +4,6 @@ try:
 except ImportError:
     import os
     os.system('pip install elasticsearch==7.17.9')
-
     from elasticsearch import Elasticsearch
     from elasticsearch.helpers import bulk
 

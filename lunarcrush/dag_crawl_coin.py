@@ -9,9 +9,6 @@ import json
 import os
 import requests
 import concurrent.futures
-import sys
-sys.path.insert(0, '/opt/airflow/dags/airfow_git/')
-#
 load_dotenv()
 
 # get env
