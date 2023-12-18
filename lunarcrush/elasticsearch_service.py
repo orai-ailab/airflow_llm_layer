@@ -1,11 +1,11 @@
 try:
-    from elasticsearch import Elasticsearch
-    from elasticsearch.helpers import bulk
-except ImportError:
     import os
-    os.system('pip install elasticsearch==7.17.9')
+    os.system('pip install elasticsearch')
+    os.system('pip install elasticsearch==7.13.4')
     from elasticsearch import Elasticsearch
     from elasticsearch.helpers import bulk
+except:
+    pass
 
 
 def connect(es_username, es_password, es_host, es_port):
