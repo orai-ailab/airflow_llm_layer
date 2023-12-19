@@ -12,12 +12,12 @@ client_url = os.environ.get("MONGO_URL")
 default_args = {
     'owner': 'user',
     'depends_on_past': False,
-    'start_date': datetime(2023, 12, 19),
+    'start_date': datetime(2023, 12, 20),
     'retries': 1,
 }
 def crawl_coingecko_data():
     all_coin_data = [] 
-    for page in range(1, 3):
+    for page in range(1, 46):
         url = 'https://pro-api.coingecko.com/api/v3/coins/markets'
         params = {
             'vs_currency': 'usd',
@@ -101,8 +101,8 @@ def insert_to_mongodb(**kwargs):
         data_dict = merged_dataframe.to_dict(orient='records')
         print(data_dict)
         client = pymongo.MongoClient(client_url)
-        db = client["LLM_DataLake"]
-        collection = db['Coingecko_allcoin']
+        db = client["LLM_database"]
+        collection = db['coin_info_Gekco']
         collection.delete_many({})
         print("have been delete data from mongo")          
         collection.insert_many(data_dict)
