@@ -28,11 +28,10 @@ def search(client, index, field, value):
 def create_or_update(client, index, condition_field, data):
     assets_to_update = [
         {
-            "_op_type": "update",
+            "_op_type": "index",
             "_index": index,
             "_id": str(item[condition_field]),
-            "doc": item,
-            "upsert": item
+            "_source": item
         }
         for item in data
     ]
