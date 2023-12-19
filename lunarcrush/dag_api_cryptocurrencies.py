@@ -36,14 +36,14 @@ def fetch_api():
         results = response.json()['data']
         update_requests = [
             UpdateOne(
-                {"id": result["id"]},
+                {"s": result["s"]},
                 {"$set": result},
                 upsert=True
             )
             for result in results
         ]
         collection.bulk_write(update_requests)
-        create_or_update(client, index_name, 'id', results)
+        create_or_update(client, index_name, 's', results)
     except Exception as e:
         os.system(
             f'python ./dags/airfow_git/utils.py --message "Request api lunarcrush errorr: {e}"')
