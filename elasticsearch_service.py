@@ -36,7 +36,6 @@ def create_or_update(client, index, condition_field, data):
         }
         for item in data
     ]
-    print(len(assets_to_update))
     try:
         success, failed = bulk(client, assets_to_update,
                                index=index, raise_on_error=True)
