@@ -43,8 +43,7 @@ def fetch_api():
             for result in results
         ]
         collection.bulk_write(update_requests)
-        rs = create_or_update(client, index_name, 'id', results)
-        return rs
+        create_or_update(client, index_name, 'id', results)
     except Exception as e:
         os.system(
             f'python ./dags/airfow_git/utils.py --message "Request api lunarcrush errorr: {e}"')

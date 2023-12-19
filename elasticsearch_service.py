@@ -36,12 +36,13 @@ def create_or_update(client, index, condition_field, data):
         }
         for item in data
     ]
+    print(len(assets_to_update))
     try:
         success, failed = bulk(client, assets_to_update,
                                index=index, raise_on_error=True)
         print(f"Successfully updated or inserted {success} documents.")
         if failed:
             print(f"Failed to update or insert {failed} documents.")
-        return len(assets_to_update)
+
     except Exception as e:
         print(f"Error updating or inserting documents: {e}")
