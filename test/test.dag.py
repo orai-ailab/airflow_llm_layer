@@ -1,7 +1,7 @@
 from datetime import datetime
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
-from airfow_git.lunarcrush.elasticsearch_service import connect, create_or_update, check_or_create_index
+from airfow_git.lunarcrush.elasticsearch_test import connect, create_or_update, check_or_create_index
 from dotenv import load_dotenv
 import os
 load_dotenv()
