@@ -55,7 +55,7 @@ default_args = {
     'start_date': datetime(2023, 12, 19),
     'retries': 1,
     'retry_delay': timedelta(minutes=5),
-    'catchup': False,
+
 }
 
 # Định nghĩa DAG
@@ -63,7 +63,8 @@ dag = DAG(
     'lunarcrush_api_cryptocurrencies',
     default_args=default_args,
     description='Thu thập dữ liệu coin trên lunarcrush.com theo rank',
-    schedule_interval='*/15 * * * *'
+    schedule_interval='*/15 * * * *',
+    catchup=False
 )
 
 task = PythonOperator(
