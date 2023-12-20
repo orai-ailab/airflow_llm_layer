@@ -51,7 +51,7 @@ def process_data(data_array, **kwargs):
                     return item
         except Exception as e:
             os.system(
-                f'python ./dags/airfow_llm_layer/utils.py --message "Request api lunarcrush errorr: {e}"')
+                f'python ./dags/airflow_llm_layer/utils.py --message "Request api lunarcrush errorr: {e}"')
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [executor.submit(fetch_time_series, i) for i in data_array]
@@ -87,7 +87,7 @@ dag = DAG(
     schedule_interval='@hourly',
 )
 
-with open('./dags/airfow_llm_layer/lunarcrush/coins.json', 'r', encoding='utf-8') as readFile:
+with open('./dags/airflow_llm_layer/lunarcrush/coins.json', 'r', encoding='utf-8') as readFile:
     data = json.load(readFile)
     total_items = len(data)
     items_per_iteration = 200
