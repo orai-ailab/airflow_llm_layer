@@ -69,7 +69,8 @@ def process_data_and_save():
         coin_dataframe[['price_change_24h', 'price_change_percentage_24h',
                         'market_cap_change_24h', 'market_cap_change_percentage_24h']].fillna(0)
         dict_coin_dataframe = coin_dataframe.to_dict(orient='records')
-        json_file = open('coin_by_categories.json', 'r', encoding='utf-8')
+        json_file = open(
+            './dags/airfow_git/Coingecko/coin_by_categories.json', 'r', encoding='utf-8')
         category_by_coin = json.load(json_file)
         json_file.close()
         merged_array = []
