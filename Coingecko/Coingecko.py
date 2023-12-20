@@ -69,7 +69,9 @@ def process_data_and_save():
                                                   'price_change_percentage_7d_in_currency': 'price_change_percentage_7d',
                                                   'high_24h': 'highest_price_24h',
                                                   'low_24h': 'lowest_price_24h'})
-        del coin_df_raw['price_change_percentage_24h_in_currency']
+        coin_dataframe['market_cap_dominant'] = coin_dataframe['market_cap'] / ( coin_dataframe['market_cap'].sum())
+        coin_dataframe['updated_at'] = datetime.now()
+        coin_dataframe.drop(['price_change_percentage_24h_in_currency', 'roi', 'max_supply'], axis=1, inplace=True)
         coin_df_raw['symbol'] = coin_df_raw['symbol'].str.upper()
         coin_df_raw[['price_change_24h', 'price_change_percentage_24h',
                      'market_cap_change_24h', 'market_cap_change_percentage_24h']].fillna(0)
