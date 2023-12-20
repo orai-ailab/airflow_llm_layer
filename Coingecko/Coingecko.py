@@ -86,6 +86,8 @@ def process_data_and_save():
         merged_df = pd.merge(
             coin_df_raw, category_by_coin_df, on='id', how='left')
         coin_by_category = merged_df.to_dict(orient='records')
+        coin_by_category = list(map(lambda data: {key: None if pd.isna(
+            value) else value for key, value in data.items()}, coin_by_category))
         update_requests = [
             UpdateOne(
                 {"id": result["id"]},
