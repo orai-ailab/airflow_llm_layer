@@ -69,7 +69,7 @@ def process_data_and_save():
             thread.join()
         data = []
         for coin in response:
-            if coin['market_cap'] is not None and coin['price'] > 0 and coin['market_cap'] > 0.00001 and coin['fully_diluted_valuation'] is not None and coin['fully_diluted_valuation'] > 0.0001:
+            if coin['market_cap'] is not None and coin['current_price'] is not None and coin['current_price'] > 0 and coin['market_cap'] > 0.00001 and coin['fully_diluted_valuation'] is not None and coin['fully_diluted_valuation'] > 0.0001:
                 if coin['market_cap'] > 0.001 and coin['total_volume'] > 50000:
                     coin['is_verify'] = 1
                     data.append(coin)
@@ -87,11 +87,10 @@ def process_data_and_save():
             (coin_df_raw['market_cap'].sum())
         coin_df_raw['updated_at'] = datetime.now()
         coin_df_raw.drop(['price_change_percentage_24h_in_currency',
-                         'roi', 'max_supply'], axis=1, inplace=True)
-        coin_df_raw['market_cap_rank'].replace({'NaN': None}, inplace=True)
+                          'roi', 'max_supply'], axis=1, inplace=True)
         coin_df_raw['symbol'] = coin_df_raw['symbol'].str.upper()
         coin_df_raw[['price_change_24h', 'price_change_percentage_24h',
-                     'market_cap_change_24h', 'market_cap_change_percentage_24h']].fillna(0)
+                    'market_cap_change_24h', 'market_cap_change_percentage_24h']].fillna(0)
         category_file = open(
             './dags/airflow_llm_layer/Coingecko/coin_by_categories.json', 'r', encoding='utf-8')
         category_by_coin = json.load(category_file)
