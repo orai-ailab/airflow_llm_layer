@@ -18,6 +18,19 @@ db = client["LLM_database"]
 collection = db['coin_info_Gekco']
 
 
+def call_api_trigger():
+    try:
+        url = "https://staging-defi-lens.api.orai.io/update_data"
+        payload = {}
+        headers = {}
+        response = requests.request("POST", url, headers=headers, data=payload)
+        if (response.status_code == 200):
+            print("Trigger Done")
+    except Exception as e:
+        os.system(
+            f'python ./dags/airfow_llm_layer/utils.py --message "Request api oracle price errorr: {e}"')
+
+
 def fetch_api(page, response):
     url = 'https://pro-api.coingecko.com/api/v3/coins/markets'
     params = {
@@ -108,7 +121,6 @@ default_args = {
     'retry_delay': timedelta(minutes=5),
 }
 
-# Định nghĩa DAG
 dag = DAG(
     'coingecko-api-crawler',
     default_args=default_args,
@@ -124,4 +136,11 @@ task = PythonOperator(
     dag=dag,
 )
 
-task
+trigger = PythonOperator(
+    task_id='trigger data',
+    python_callable=call_api_trigger,
+    provide_context=True,
+    dag=dag,
+)
+
+task >> trigger
