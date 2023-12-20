@@ -69,12 +69,13 @@ def process_data_and_save():
             thread.join()
         data = []
         for coin in response:
-            if coin['market_cap'] is not None and coin['market_cap'] > 0.001 and coin['total_volume'] > 50000:
-                coin['is_verify'] = 1
+            if coin['market_cap'] is not None and coin['price'] > 0 and coin['market_cap'] > 0.00001 and coin['fully_diluted_valuation'] is not None and coin['fully_diluted_valuation'] > 0.0001:
+                if coin['market_cap'] > 0.001 and coin['total_volume'] > 50000:
+                    coin['is_verify'] = 1
+                    data.append(coin)
+                    continue
+                coin['is_verify'] = 0
                 data.append(coin)
-                continue
-            coin['is_verify'] = 0
-            data.append(coin)
 
         coin_df_raw = pd.DataFrame(data)
         coin_df_raw = coin_df_raw.rename(columns={'price_change_percentage_14d_in_currency': 'price_change_percentage_14d',
