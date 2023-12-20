@@ -1,4 +1,4 @@
-from airfow_git.elasticsearch_service import connect, check_or_create_index, insert_many
+from airfow_llm_layer.elasticsearch_service import connect, create_or_update, check_or_create_index
 from airflow.operators.python_operator import PythonOperator
 from airflow import DAG
 from datetime import datetime, timedelta
@@ -27,10 +27,11 @@ client = connect(es_username, es_password, es_host, es_port)
 index_name = 'oraichain-oracle-price'
 check_or_create_index(index_name, client)
 
+
 def fetch_api(url, responses):
     response = requests.get(url)
     if response.status_code == 200:
-      responses.append(response.json())
+        responses.append(response.json())
 
 
 def fetch_oracle_price():
@@ -48,7 +49,7 @@ def fetch_oracle_price():
         responses = []
         threads = []
         for url in api_urls:
-            thread = threading.Thread(target=fetch_api, args=(url,responses))
+            thread = threading.Thread(target=fetch_api, args=(url, responses))
             thread.start()
             threads.append(thread)
 

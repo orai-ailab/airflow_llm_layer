@@ -1,6 +1,7 @@
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
 
+
 def connect(es_username, es_password, es_host, es_port):
     client = Elasticsearch("{}:{}/".format(es_host, es_port),
                            http_auth=(es_username, es_password))
@@ -43,6 +44,7 @@ def create_or_update(client, index, condition_field, data):
 
     except Exception as e:
         print(f"Error updating or inserting documents: {e}")
+
 
 def insert_many(client, index, datas):
     print("🚀 ~ file: elasticsearch_service.py:49 ~ datas:", datas)
