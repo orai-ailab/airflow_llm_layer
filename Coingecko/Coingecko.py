@@ -20,7 +20,7 @@ collection = db['coin_info_Gekco']
 
 def call_api_trigger():
     try:
-        url = "https://staging-defi-lens.api.orai.io/update_data"
+        url = "https://defi-lens.api.orai.io/update_data"
         payload = {}
         headers = {}
         response = requests.request("POST", url, headers=headers, data=payload)
