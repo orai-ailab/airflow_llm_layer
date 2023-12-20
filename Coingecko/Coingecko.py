@@ -57,35 +57,36 @@ def process_data_and_save():
         data = []
         for coin in response:
             if coin['market_cap'] is not None and coin['market_cap'] > 0.001 and coin['total_volume'] > 50000:
+                coin['is_verify'] = 1
                 data.append(coin)
-        coin_dataframe = pd.DataFrame(data)
-        coin_dataframe = coin_dataframe.rename(columns={'price_change_percentage_14d_in_currency': 'price_change_percentage_14d',
-                                                        'price_change_percentage_30d_in_currency': 'price_change_percentage_30d',
-                                                        'price_change_percentage_7d_in_currency': 'price_change_percentage_7d',
-                                                        'high_24h': 'highest_price_24h',
-                                                        'low_24h': 'lowest_price_24h'})
-        del coin_dataframe['price_change_percentage_24h_in_currency']
-        coin_dataframe['symbol'] = coin_dataframe['symbol'].str.upper()
-        coin_dataframe[['price_change_24h', 'price_change_percentage_24h',
-                        'market_cap_change_24h', 'market_cap_change_percentage_24h']].fillna(0)
-        dict_coin_dataframe = coin_dataframe.to_dict(orient='records')
-        json_file = open(
-            './dags/airfow_git/Coingecko/coin_by_categories.json', 'r', encoding='utf-8')
-        category_by_coin = json.load(json_file)
-        json_file.close()
-        merged_array = []
-        df_dict_coin = pd.DataFrame(dict_coin_dataframe)
-        df_category_by_coin = pd.DataFrame(category_by_coin)
+                continue
+            coin['is_verify'] = 0
+            data.append(coin)
+
+        coin_df_raw = pd.DataFrame(data)
+        coin_df_raw = coin_df_raw.rename(columns={'price_change_percentage_14d_in_currency': 'price_change_percentage_14d',
+                                                  'price_change_percentage_30d_in_currency': 'price_change_percentage_30d',
+                                                  'price_change_percentage_7d_in_currency': 'price_change_percentage_7d',
+                                                  'high_24h': 'highest_price_24h',
+                                                  'low_24h': 'lowest_price_24h'})
+        del coin_df_raw['price_change_percentage_24h_in_currency']
+        coin_df_raw['symbol'] = coin_df_raw['symbol'].str.upper()
+        coin_df_raw[['price_change_24h', 'price_change_percentage_24h',
+                     'market_cap_change_24h', 'market_cap_change_percentage_24h']].fillna(0)
+        category_file = open('coin_by_categories.json', 'r', encoding='utf-8')
+        category_by_coin = json.load(category_file)
+        category_file.close()
+        category_by_coin_df = pd.DataFrame(category_by_coin)
         merged_df = pd.merge(
-            df_dict_coin, df_category_by_coin, on='id', how='left')
-        merged_array = merged_df.to_dict(orient='records')
+            coin_df_raw, category_by_coin_df, on='id', how='left')
+        coin_by_category = merged_df.to_dict(orient='records')
         update_requests = [
             UpdateOne(
                 {"id": result["id"]},
                 {"$set": result},
                 upsert=True
             )
-            for result in merged_array
+            for result in coin_by_category
         ]
         collection.bulk_write(update_requests)
     except Exception as e:
