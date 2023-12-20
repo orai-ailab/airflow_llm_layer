@@ -137,7 +137,7 @@ task = PythonOperator(
 )
 
 trigger = PythonOperator(
-    task_id='trigger data',
+    task_id='trigger-data',
     python_callable=call_api_trigger,
     provide_context=True,
     dag=dag,
