@@ -46,7 +46,7 @@ def remove_trash_coin(coins):
     # Xác định index của các đồng tiền cần loại bỏ
     indexes_to_drop = []
     for idx, record in enumerate(coins):
-        if record['market_cap'] is None or record['market_cap'] == 0 or record['market_cap'] < 1000000 or record['total_volume'] < 1000000:
+        if record['market_cap'] is None or record['market_cap'] == 0 or record['market_cap'] < 0.001  or record['total_volume'] < 50000:
             indexes_to_drop.append(idx)
     # Loại bỏ các đồng tiền khỏi danh sách dựa trên index đã xác định
     for idx in reversed(indexes_to_drop):
