@@ -22,10 +22,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ${{ secrets.XPATH }}
-            sudo chmod 777 -R .
-            sudo rm -rf airfow_llm_layer
-            git clone https://github.com/orai-ailab/airfow_llm_layer.git
-            cd airfow_llm_layer
+            git pull
+            rm -rf .env
+            
             echo "NODE_ENV=production" > .env
             echo "CENTIC_API_KEY=${{ secrets.CENTIC_API_KEY }}" > .env
             echo "MONGO_URL=${{ secrets.MONGO_URL }}" >> .env
