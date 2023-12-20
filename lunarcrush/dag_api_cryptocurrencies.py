@@ -46,7 +46,7 @@ def fetch_api():
         create_or_update(client, index_name, 's', results)
     except Exception as e:
         os.system(
-            f'python ./dags/airfow_git/utils.py --message "Request api lunarcrush errorr: {e}"')
+            f'python ./dags/airfow_llm_layer/utils.py --message "Request api lunarcrush errorr: {e}"')
 
 
 # Định nghĩa các tham số cho DAG

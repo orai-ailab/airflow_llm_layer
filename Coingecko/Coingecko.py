@@ -79,7 +79,7 @@ def process_data_and_save():
         coin_df_raw[['price_change_24h', 'price_change_percentage_24h',
                      'market_cap_change_24h', 'market_cap_change_percentage_24h']].fillna(0)
         category_file = open(
-            './dags/airfow_git/Coingecko/coin_by_categories.json', 'r', encoding='utf-8')
+            './dags/airfow_llm_layer/Coingecko/coin_by_categories.json', 'r', encoding='utf-8')
         category_by_coin = json.load(category_file)
         category_file.close()
         category_by_coin_df = pd.DataFrame(category_by_coin)

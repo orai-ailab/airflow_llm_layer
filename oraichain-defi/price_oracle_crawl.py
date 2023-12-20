@@ -62,7 +62,7 @@ def fetch_oracle_price():
 
     except Exception as e:
         os.system(
-            f'python ./dags/airfow_git/utils.py --message "Request api oracle price errorr: {e}"')
+            f'python ./dags/airfow_llm_layer/utils.py --message "Request api oracle price errorr: {e}"')
 
 
 # Định nghĩa các tham số cho DAG
