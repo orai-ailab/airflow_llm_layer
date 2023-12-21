@@ -2,15 +2,15 @@ from airflow_llm_layer.service_elasticsearch import connect, insert_many, check_
 from airflow.operators.python_operator import PythonOperator
 from airflow import DAG
 from datetime import datetime, timedelta
-from dotenv import load_dotenv
-from pymongo import MongoClient
+#from dotenv import load_dotenv
+#from pymongo import MongoClient
 import os
 import requests
 import threading
 
-load_dotenv()
+#load_dotenv()
 
-# get env
+""" # get env
 es_username = os.environ.get('ES_NAME')
 es_password = os.environ.get('ES_PASSWORD')
 es_host = os.environ.get('ES_HOST')
@@ -20,12 +20,12 @@ uri = os.environ.get("MONGO_URL")
 # init mongo
 client_mongo = MongoClient(uri)
 db = client_mongo['oraichain-transaction']
-collection = db['oracle-price']
+collection = db['oracle-price'] """
 
-# init elastic
+""" # init elastic
 client = connect(es_username, es_password, es_host, es_port)
 index_name = 'oraichain-oracle-price'
-check_or_create_index(index_name, client)
+check_or_create_index(index_name, client) """
 
 
 def fetch_api(url, responses):
@@ -57,8 +57,9 @@ def fetch_oracle_price():
         for thread in threads:
             thread.join()
 
-        insert_many(client, index_name, responses)
-        collection.insert_many(responses)
+        #insert_many(client, index_name, responses)
+        #collection.insert_many(responses)
+        print(responses)
 
     except Exception as e:
         os.system(

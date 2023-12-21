@@ -118,7 +118,7 @@ def process_data_and_save():
 default_args = {
     'owner': 'airflow',
     'start_date': datetime(2023, 12, 20),
-    'retries': 1,
+    'retries': 0,
     'retry_delay': timedelta(minutes=5),
 }
 
