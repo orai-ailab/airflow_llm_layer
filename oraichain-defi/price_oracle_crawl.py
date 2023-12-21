@@ -1,4 +1,4 @@
-from airflow_llm_layer.elasticsearch_service import connect, create_or_update, check_or_create_index
+from airflow_llm_layer.elasticsearch_service import connect, insert_many, check_or_create_index
 from airflow.operators.python_operator import PythonOperator
 from airflow import DAG
 from datetime import datetime, timedelta
@@ -62,7 +62,7 @@ def fetch_oracle_price():
 
     except Exception as e:
         os.system(
-            f'python ./dags/airfow_llm_layer/utils.py --message "Request api oracle price errorr: {e}"')
+            f'python ./dags/airflow_llm_layer/utils.py --message "Request api oracle price errorr: {e}"')
 
 
 # Định nghĩa các tham số cho DAG
