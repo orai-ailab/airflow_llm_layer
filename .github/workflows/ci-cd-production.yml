@@ -23,9 +23,9 @@ jobs:
           script: |
             cd /home/nguyenduchoang/docker-compose-data-center/PROD/dags
             sudo chmod 777 -R .
-            sudo rm -rf airfow_llm_layer
-            git clone https://github.com/orai-ailab/airfow_llm_layer.git
-            cd airfow_llm_layer
+            sudo rm -rf airflow_llm_layer
+            git clone https://github.com/orai-ailab/airflow_llm_layer.git
+            cd airflow_llm_layer
             echo "NODE_ENV=production" > .env
             echo "CENTIC_API_KEY=${{ secrets.CENTIC_API_KEY }}" > .env
             echo "MONGO_URL=${{ secrets.MONGO_URL }}" >> .env
