@@ -21,7 +21,7 @@ jobs:
           passphrase: ${{ secrets.SERVER_PASSWORD }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ${{ secrets.XPATH }}
+            cd /home/nguyenduchoang/docker-compose-data-center/PROD/dags
             git pull
             rm -rf .env
             
