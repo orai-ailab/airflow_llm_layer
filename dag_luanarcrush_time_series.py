@@ -87,7 +87,7 @@ dag = DAG(
     schedule_interval='@hourly',
 )
 
-with open('./dags/airflow_llm_layer/lunarcrush/coins.json', 'r', encoding='utf-8') as readFile:
+with open('./dags/airflow_llm_layer/lunarcrush_coins.json', 'r', encoding='utf-8') as readFile:
     data = json.load(readFile)
     total_items = len(data)
     items_per_iteration = 200

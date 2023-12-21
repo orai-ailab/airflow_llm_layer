@@ -79,7 +79,7 @@ dag = DAG(
     'oraichain-price-oracle',
     default_args=default_args,
     description='Thu thập dữ liệu price oracle mỗi 15 giây',
-    schedule_interval=timedelta(seconds=15),
+    schedule_interval='*/1 * * * *',
     catchup=False
 )
 
