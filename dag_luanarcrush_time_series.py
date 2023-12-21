@@ -1,4 +1,4 @@
-from airflow_llm_layer.elasticsearch_service import connect, create_or_update, check_or_create_index
+from airflow_llm_layer.service_elasticsearch import connect, create_or_update, check_or_create_index
 from airflow.operators.python_operator import PythonOperator
 from airflow import DAG
 from time import sleep

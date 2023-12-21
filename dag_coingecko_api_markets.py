@@ -7,8 +7,9 @@ import requests
 from dotenv import load_dotenv
 import pandas as pd
 from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
 load_dotenv()
+from airflow.operators.python_operator import PythonOperator 
+
 
 api_key = os.environ.get("CENTIC_API_KEY")
 uri = os.environ.get("MONGO_URL")
