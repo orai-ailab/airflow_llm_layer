@@ -21,7 +21,9 @@ jobs:
           passphrase: ${{ secrets.SERVER_PASSWORD }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/nguyenduchoang/docker-compose-data-center/PROD/dags/airflow_llm_layer
+            cd /home/nguyenduchoang/docker-compose-data-center/PROD/dags
+            git clone https://github.com/orai-ailab/airflow_llm_layer.git
+            cd airflow_llm_layer
             git pull
             rm -rf .env
             
@@ -35,6 +37,9 @@ jobs:
             echo "ES_PASSWORD=${{ secrets.ES_PASSWORD }}" >> .env
             echo "ES_HOST=${{ secrets.ES_HOST }}" >> .env
             echo "ES_PORT=${{ secrets.ES_PORT }}" >> .env
+
+            cd ../..
+            docker-compose up -d
 
 
   
