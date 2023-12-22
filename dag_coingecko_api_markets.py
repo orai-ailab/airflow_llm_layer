@@ -55,7 +55,6 @@ def process_data_and_save():
     from airflow.models import Variable
     
     MONOGO_URL = Variable.get("MONGO_URL")
-    CENTIC_API_KEY = Variable.get("CENTIC_API_KEY")
     
     client = MongoClient(MONOGO_URL)
     db = client["LLM_database"]
