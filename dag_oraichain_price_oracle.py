@@ -1,31 +1,9 @@
-from airflow_llm_layer.service_elasticsearch import connect, insert_many, check_or_create_index
 from airflow.operators.python_operator import PythonOperator
 from airflow import DAG
 from datetime import datetime, timedelta
-#from dotenv import load_dotenv
-#from pymongo import MongoClient
-import os
-import requests
 import threading
 
-#load_dotenv()
 
-""" # get env
-es_username = os.environ.get('ES_NAME')
-es_password = os.environ.get('ES_PASSWORD')
-es_host = os.environ.get('ES_HOST')
-es_port = os.environ.get("ES_PORT")
-uri = os.environ.get("MONGO_URL")
-
-# init mongo
-client_mongo = MongoClient(uri)
-db = client_mongo['oraichain-transaction']
-collection = db['oracle-price'] """
-
-""" # init elastic
-client = connect(es_username, es_password, es_host, es_port)
-index_name = 'oraichain-oracle-price'
-check_or_create_index(index_name, client) """
 
 
 def fetch_api(url, responses):
@@ -35,14 +13,64 @@ def fetch_api(url, responses):
         responses.append(response.json())
 
 
+
+
+        
+        
+
 def fetch_oracle_price():
     import sys
-    # thêm đường dẫn import package
     sys.path.append('/opt/airflow/dags/airflow_llm_layer/venv/lib/python3.10/site-packages')
     from pymongo import MongoClient
     from airflow.models import Variable
+    from elasticsearch import Elasticsearch
+    from elasticsearch.helpers import bulk
     
+    def connect(es_username, es_password, es_host, es_port):
+        client = Elasticsearch("{}:{}/".format(es_host, es_port),
+                            http_auth=(es_username, es_password))
+        return client
+
+
+    def check_or_create_index(index, client):
+        if not client.indices.exists(index=index):
+            client.indices.create(index=index)
+
+
+    def insert_many(client, index, datas):
+        print("🚀 ~ file: elasticsearch_service.py:49 ~ datas:", datas)
+        insert_actions = [
+            {
+                # "_op_type": "insert",
+                "_index": index,
+                # "_id":  uuid.uuid4(),
+                "_source": item
+            }
+            for item in datas
+        ]
+        try:
+            success, failed = bulk(client, insert_actions,
+                                index=index, raise_on_error=True)
+            print(f"Successfully updated or inserted {success} documents.")
+            if failed:
+                print(f"Failed to update or insert {failed} documents.")
+
+        except Exception as e:
+            print(f"Error updating or inserting documents: {e}")
+    
+   # get env
+    ES_USERNAME = Variable.get('ES_NAME')
+    ES_PASSWORD = Variable.get('ES_PASSWORD')
+    ES_HOST = Variable.get('ES_HOST')
+    ES_PORT = Variable.get("ES_PORT")
     MONOGO_URL = Variable.get("MONGO_URL")
+    
+    # init elastic
+    client = connect(ES_USERNAME, ES_PASSWORD, ES_HOST, ES_PORT)
+    index_name = 'oraichain-oracle-price'
+    check_or_create_index(index_name, client)
+    
+    # init mongo
     client_mongo = MongoClient(MONOGO_URL)
     db = client_mongo['oraichain-transaction']
     collection = db['oracle-price']
@@ -69,7 +97,7 @@ def fetch_oracle_price():
     for thread in threads:
         thread.join()
 
-    #insert_many(client, index_name, responses)
+    insert_many(client, index_name, responses)
     collection.insert_many(responses)
     print(responses)
 
@@ -81,8 +109,7 @@ default_args = {
     'owner': 'airflow',
     'start_date': datetime(2023, 12, 19),
     'retries': 1,
-    'retry_delay': timedelta(minutes=5),
-
+    'retry_delay': timedelta(seconds=5),
 }
 
 # Định nghĩa DAG

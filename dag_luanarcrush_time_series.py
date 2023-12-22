@@ -1,4 +1,3 @@
-from airflow_llm_layer.service_elasticsearch import connect, create_or_update, check_or_create_index
 from airflow.operators.python_operator import PythonOperator
 from airflow import DAG
 from time import sleep
@@ -24,10 +23,7 @@ client_mongo = MongoClient(uri)
 db = client_mongo['LLM_database']
 collection = db['lunarcrush_coin_info']
 
-# init elastic
-client = connect(es_username, es_password, es_host, es_port)
-index_name = 'lunarcrush-coin-info'
-check_or_create_index(index_name, client)
+
 
 
 def process_data(data_array, **kwargs):
@@ -66,7 +62,6 @@ def process_data(data_array, **kwargs):
             for result in results
         ]
         collection.bulk_write(update_requests)
-        create_or_update(client, index_name, 'asset_id', results)
     sleep(20)
 
 

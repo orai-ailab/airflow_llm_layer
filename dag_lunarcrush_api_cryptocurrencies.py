@@ -1,4 +1,3 @@
-from airflow_llm_layer.service_elasticsearch import connect, create_or_update, check_or_create_index
 from airflow.operators.python_operator import PythonOperator
 from airflow import DAG
 from datetime import datetime, timedelta
@@ -21,10 +20,6 @@ client_mongo = MongoClient(uri)
 db = client_mongo['LLM_database']
 collection = db['lunarcrush_coin_info_v2']
 
-# init elastic
-client = connect(es_username, es_password, es_host, es_port)
-index_name = 'lunarcrush_coin_info_v2'
-check_or_create_index(index_name, client)
 
 
 def fetch_api():
