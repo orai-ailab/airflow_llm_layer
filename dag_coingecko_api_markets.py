@@ -20,6 +20,7 @@ def fetch_api(page, response):
     from airflow.models import Variable
     
     x_cg_pro_api_key = Variable.get("x_cg_pro_api_key")
+    print(x_cg_pro_api_key)
     url = 'https://pro-api.coingecko.com/api/v3/coins/markets'
     params = {
         'vs_currency': 'usd',
@@ -43,6 +44,7 @@ def fetch_api(page, response):
     else:
         print(
             f"Failed to crawled data for page {page}. Status code: {res.status_code}")
+        print(res.text)
 
 
 def process_data_and_save():
@@ -57,7 +59,7 @@ def process_data_and_save():
     MONOGO_URL = Variable.get("MONGO_URL")
     
     client = MongoClient(MONOGO_URL)
-    db = client["LLM_database"]
+    db = client["llm_database"]
     collection = db['coin_info_Gekco']
     
     response = []
