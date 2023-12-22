@@ -29,41 +29,51 @@ check_or_create_index(index_name, client) """
 
 
 def fetch_api(url, responses):
+    import requests
     response = requests.get(url)
     if response.status_code == 200:
         responses.append(response.json())
 
 
 def fetch_oracle_price():
-    try:
-        orai_fetch_url = "https://pricefeed.oraichainlabs.org/"
-        inj_fetch_url = "https://pricefeed-futures.oraichainlabs.org/inj"
+    import sys
+    # thêm đường dẫn import package
+    sys.path.append('/opt/airflow/dags/airflow_llm_layer/venv/lib/python3.10/site-packages')
+    from pymongo import MongoClient
+    from airflow.models import Variable
+    
+    MONOGO_URL = Variable.get("MONGO_URL")
+    client_mongo = MongoClient(MONOGO_URL)
+    db = client_mongo['oraichain-transaction']
+    collection = db['oracle-price']
 
-        # List of API endpoints
-        api_urls = [
-            orai_fetch_url,
-            inj_fetch_url,
-        ]
 
-        # Create and start a thread for each API request
-        responses = []
-        threads = []
-        for url in api_urls:
-            thread = threading.Thread(target=fetch_api, args=(url, responses))
-            thread.start()
-            threads.append(thread)
+    orai_fetch_url = "https://pricefeed.oraichainlabs.org/"
+    inj_fetch_url = "https://pricefeed-futures.oraichainlabs.org/inj"
 
-        # Wait for all threads to complete
-        for thread in threads:
-            thread.join()
+    # List of API endpoints
+    api_urls = [
+        orai_fetch_url,
+        inj_fetch_url,
+    ]
 
-        #insert_many(client, index_name, responses)
-        #collection.insert_many(responses)
-        print(responses)
+    # Create and start a thread for each API request
+    responses = []
+    threads = []
+    for url in api_urls:
+        thread = threading.Thread(target=fetch_api, args=(url, responses))
+        thread.start()
+        threads.append(thread)
 
-    except Exception as e:
-        os.system(
-            f'python ./dags/airflow_llm_layer/utils.py --message "Request api oracle price errorr: {e}"')
+    # Wait for all threads to complete
+    for thread in threads:
+        thread.join()
+
+    #insert_many(client, index_name, responses)
+    collection.insert_many(responses)
+    print(responses)
+
+    
 
 
 # Định nghĩa các tham số cho DAG
