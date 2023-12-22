@@ -22,57 +22,11 @@ def fetch_oracle_price():
     import sys
     sys.path.append('/opt/airflow/dags/airflow_llm_layer/venv/lib/python3.10/site-packages')
     from pymongo import MongoClient
-    sys.path.append('/opt/airflow/dags/airflow_llm_layer/venv/lib/python3.10/site-packages')
-    from elasticsearch import Elasticsearch
-    sys.path.append('/opt/airflow/dags/airflow_llm_layer/venv/lib/python3.10/site-packages')
-    from elasticsearch.helpers import bulk
-    
     from airflow.models import Variable
     
     
-    def connect(es_username, es_password, es_host, es_port):
-        client = Elasticsearch("{}:{}/".format(es_host, es_port),
-                            http_auth=(es_username, es_password))
-        return client
-
-
-    def check_or_create_index(index, client):
-        if not client.indices.exists(index=index):
-            client.indices.create(index=index)
-
-
-    def insert_many(client, index, datas):
-        print("🚀 ~ file: elasticsearch_service.py:49 ~ datas:", datas)
-        insert_actions = [
-            {
-                # "_op_type": "insert",
-                "_index": index,
-                # "_id":  uuid.uuid4(),
-                "_source": item
-            }
-            for item in datas
-        ]
-        try:
-            success, failed = bulk(client, insert_actions,
-                                index=index, raise_on_error=True)
-            print(f"Successfully updated or inserted {success} documents.")
-            if failed:
-                print(f"Failed to update or insert {failed} documents.")
-
-        except Exception as e:
-            print(f"Error updating or inserting documents: {e}")
-    
    # get env
-    ES_USERNAME = Variable.get('ES_NAME')
-    ES_PASSWORD = Variable.get('ES_PASSWORD')
-    ES_HOST = Variable.get('ES_HOST')
-    ES_PORT = Variable.get("ES_PORT")
     MONOGO_URL = Variable.get("MONGO_URL")
-    
-    # init elastic
-    client = connect(ES_USERNAME, ES_PASSWORD, ES_HOST, ES_PORT)
-    index_name = 'oraichain-oracle-price'
-    check_or_create_index(index_name, client)
     
     # init mongo
     client_mongo = MongoClient(MONOGO_URL)
@@ -100,8 +54,7 @@ def fetch_oracle_price():
     # Wait for all threads to complete
     for thread in threads:
         thread.join()
-
-    insert_many(client, index_name, responses)
+        
     collection.insert_many(responses)
     print(responses)
 
