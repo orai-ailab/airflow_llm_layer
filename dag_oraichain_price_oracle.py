@@ -22,9 +22,13 @@ def fetch_oracle_price():
     import sys
     sys.path.append('/opt/airflow/dags/airflow_llm_layer/venv/lib/python3.10/site-packages')
     from pymongo import MongoClient
-    from airflow.models import Variable
+    sys.path.append('/opt/airflow/dags/airflow_llm_layer/venv/lib/python3.10/site-packages')
     from elasticsearch import Elasticsearch
+    sys.path.append('/opt/airflow/dags/airflow_llm_layer/venv/lib/python3.10/site-packages')
     from elasticsearch.helpers import bulk
+    
+    from airflow.models import Variable
+    
     
     def connect(es_username, es_password, es_host, es_port):
         client = Elasticsearch("{}:{}/".format(es_host, es_port),
