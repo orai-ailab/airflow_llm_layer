@@ -20,7 +20,6 @@ def fetch_api(page, response):
     from airflow.models import Variable
     
     x_cg_pro_api_key = Variable.get("x_cg_pro_api_key")
-    print(x_cg_pro_api_key)
     url = 'https://pro-api.coingecko.com/api/v3/coins/markets'
     params = {
         'vs_currency': 'usd',
@@ -32,7 +31,6 @@ def fetch_api(page, response):
         'x_cg_pro_api_key': x_cg_pro_api_key
     }
     res = requests.get(url, params=params)
-
     if res.status_code == 200:
         coin_data = res.json()
         for item in coin_data:
