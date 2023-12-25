@@ -24,6 +24,16 @@ jobs:
             cd /home/ubuntu/airflow_llm_layer
             git pull
 
+            
+            rm -rf .env
+            echo "AIRFLOW_UID=$(id -u)" >> .env
+            echo "MONGO_INITDB_ROOT_USERNAME=${{ secrets.MONGO_INITDB_ROOT_USERNAME }}" >> .env
+            echo "MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}" >> .env
+            echo "GF_SECURITY_ADMIN_USER=${{ secrets.GF_SECURITY_ADMIN_USER }}" >> .env
+            echo "GF_SECURITY_ADMIN_PASSWORD=${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}" >> .env
+
+
+            cd dags
             rm -rf .env
             echo "NODE_ENV=production" > .env
             echo "CENTIC_API_KEY=${{ secrets.CENTIC_API_KEY }}" > .env
@@ -36,10 +46,6 @@ jobs:
             echo "ES_HOST=${{ secrets.ES_HOST }}" >> .env
             echo "ES_PORT=${{ secrets.ES_PORT }}" >> .env
 
-            echo "AIRFLOW_UID=$(id -u)" >> .env
-            echo "MONGO_INITDB_ROOT_USERNAME=${{ secrets.MONGO_INITDB_ROOT_USERNAME }}" >> .env
-            echo "MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}" >> .env
-            echo "GF_SECURITY_ADMIN_USER=${{ secrets.GF_SECURITY_ADMIN_USER }}" >> .env
-            echo "GF_SECURITY_ADMIN_PASSWORD=${{ secrets.GF_SECURITY_ADMIN_PASSWORD }}" >> .env
+            
 
   
