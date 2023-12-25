@@ -46,6 +46,11 @@ jobs:
             echo "ES_HOST=${{ secrets.ES_HOST }}" >> .env
             echo "ES_PORT=${{ secrets.ES_PORT }}" >> .env
 
+            cd ..
+            mkdir -p logs
+            mkdir -p plugins
+            docker-compose up -d
+
             
 
   
